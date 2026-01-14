@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  namespace: delab
+data:
+  config.js: |-
+    window.env = {
+      "DELAB_STATUS_BACKEND": "http://localhost:5000/",
+      "RESOURCES_URL": "resources",
+      "NAVIGATE_URL": "resources/navigate"
+    }

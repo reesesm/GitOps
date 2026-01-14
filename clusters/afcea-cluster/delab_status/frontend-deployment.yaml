@@ -1,0 +1,58 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resources-frontend
+  namespace: delab
+  labels:
+    name: resources-frontend
+spec:
+  selector:
+    matchLabels:
+      name: resources-frontend
+  template:
+    metadata:
+      labels:
+        name: resources-frontend
+    spec:
+      containers:
+        - name: resources-frontend
+          envFrom:
+          - configMapRef:
+              name: frontend-config
+          image: edendevregistry.azurecr.io/delab/resources-frontend:v.1.0.1
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: react-config
+              mountPath: /usr/share/nginx/html/config.js
+              subPath: config.js
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 3000
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 30
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 30
+          ports:
+            - containerPort: 3000
+      volumes:
+        - name: react-config
+          configMap:
+            name: frontend-config
+            items:
+              - key: config.js
+                path: config.js
+      imagePullSecrets:
+      - name: edendevregistry-secret
