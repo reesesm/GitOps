@@ -20,7 +20,7 @@ spec:
           envFrom:
           - configMapRef:
               name: frontend-config
-          image: edendevregistry.azurecr.io/delab/resources-frontend:v1.0.1
+          image: edendevregistry.azurecr.io/delab/resources-frontend:v1.0.0
           imagePullPolicy: Always
           volumeMounts:
             - name: react-config
